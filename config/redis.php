@@ -37,9 +37,10 @@ return [
         'prefix' => 'redis_session_',
     ],
 
+
     'clusters' => [
         'session_cluster' => [
-            'host' => ['192.168.123.113:6379', '192.168.123.113:6379'],
+            'host' => '192.168.123.113:6379',
             'timeout' => 2,
             'auth' => '123456',
             'prefix' => 'redis_session_',
