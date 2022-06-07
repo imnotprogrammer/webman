@@ -37,13 +37,19 @@ return [
         'prefix' => 'redis_session_',
     ],
 
+    'options' => [
+        'cluster' => 'redis',
+    ],
 
     'clusters' => [
         'session_cluster' => [
-            'host' => '192.168.123.113:6379',
-            'timeout' => 2,
-            'auth' => '123456',
-            'prefix' => 'redis_session_',
+            [
+                'host' => '192.168.123.113',
+                'port' => 6379,
+                'timeout' => 2,
+                'password' => '123456',
+                'prefix' => 'redis_session_',
+            ]
         ],
     ],
 

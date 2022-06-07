@@ -31,7 +31,6 @@ class Index extends Controller
             ]);
         }*/
 
-        Redis::connection();
 
         session()->set('user_id', 123123);
 
