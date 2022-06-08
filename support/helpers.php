@@ -90,6 +90,22 @@ function runtime_path()
     return $path;
 }
 
+
+/**
+ * Phar support.
+ * Compatible with the 'realpath' function in the phar file.
+ *
+ * @return string
+ */
+function storage_path()
+{
+    static $path = '';
+    if (!$path) {
+        $path = config('app.runtime_path', BASE_PATH . DIRECTORY_SEPARATOR . 'storage');
+    }
+    return $path;
+}
+
 /**
  * @param int $status
  * @param array $headers

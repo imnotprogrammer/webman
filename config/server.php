@@ -13,10 +13,10 @@
  */
 
 return [
-    'listen' => 'http://0.0.0.0:8787',
+    'listen' => sprintf('http://0.0.0.0:%s', env('SERVER_PORT', 8787)),
     'transport' => 'tcp',
     'context' => [],
-    'name' => 'webman',
+    'name' => env('APP_NAME', 'webman'),
     'count' => cpu_count() * 2,
     'user' => '',
     'group' => '',

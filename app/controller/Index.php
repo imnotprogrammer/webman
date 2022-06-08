@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use App\Controller;
+use support\Db;
 use support\Redis;
 use support\Request;
 
@@ -32,6 +33,7 @@ class Index extends Controller
         }*/
 
 
+        Db::connection()->select('select 1');
         session()->set('user_id', 123123);
 
         return response(config('app.runtime_path'));
@@ -44,6 +46,10 @@ class Index extends Controller
 
     public function json(Request $request)
     {
+        return json(['code' => 0, 'msg' => 'ok']);
+    }
+
+    public function login() {
         return json(['code' => 0, 'msg' => 'ok']);
     }
 

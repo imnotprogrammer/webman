@@ -14,14 +14,19 @@
 
 use Webman\Route;
 
+Route::get('/', function () {
 
-Route::group('/api', function () {
-    Route::get('/login', [\App\controller\Login::class, 'index']);
 });
 
-Route::get('/template', [\App\controller\Template::class, 'list']);
-Route::post('/template/add', [\App\controller\Template::class, 'store']);
-Route::post('/', [\App\controller\Index::class, 'index']);
+Route::group('/admin', function () {
+    Route::get('', [\App\admin\controller\Home::class, 'index']);
+    Route::get('/login', [\App\admin\controller\auth\Login::class, 'login']);
+});
 
+
+Route::group('/api', function () {
+    Route::get('/register', [\App\api\controller\Login::class, 'register']);
+    Route::get('/login', [\App\api\controller\Login::class, 'login']);
+});
 
 

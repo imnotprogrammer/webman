@@ -20,20 +20,11 @@ return [
 
         'mysql' => [
             'driver'      => 'mysql',
-            'read' => [
-                'host' => env('DB_MASTER_HOST', '127.0.0.1'),
-                'password' => env('DB_MASTER_PASSWORD', ''),
-            ],
-            'write' => [
-                'host' => env('DB_SLAVE_HOST', '127.0.0.1'),
-                'password' => env('DB_SLAVE_PASSWORD', ''),
-            ],
-
-            //'host'        => env('DB_HOST', '127.0.0.1'),
+            'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', 3306),
             'database'    => env('DB_NAME', ''),
             'username'    => env('DB_USER', 'root'),
-            //'password'    => env('DB_PASSWORD', ''),
+            'password'    => env('DB_PASSWORD', ''),
             'unix_socket' => '',
             'charset'     => 'utf8',
             'collation'   => 'utf8_unicode_ci',
