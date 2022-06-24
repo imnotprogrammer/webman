@@ -70,7 +70,7 @@
   import { ValidatedError } from '@arco-design/web-vue/es/form/interface';
   import { useI18n } from 'vue-i18n';
   import { useStorage } from '@vueuse/core';
-  import { useUserStore } from '@/store';
+  import { useUserStore, useAppStore } from '@/store';
   import useLoading from '@/hooks/loading';
   import type { LoginData } from '@/api/user';
 
@@ -100,7 +100,10 @@
     if (!errors) {
       setLoading(true);
       try {
+        // const appStore = useAppStore(); 
+        
         await userStore.login(values as LoginData);
+        // await appStore.fetchServerMenuConfig(); 
         const { redirect, ...othersQuery } = router.currentRoute.value.query;
         router.push({
           name: (redirect as string) || 'Workplace',
@@ -108,6 +111,7 @@
             ...othersQuery,
           },
         });
+
         Message.success(t('login.form.login.success'));
         const { rememberPassword } = loginConfig.value;
         const { username, password } = values;

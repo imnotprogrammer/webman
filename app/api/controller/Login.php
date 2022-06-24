@@ -1,20 +1,17 @@
 <?php
 
-
 namespace App\api\controller;
 
-
 use App\Controller;
-
 class Login extends Controller
 {
-    public function login() {
+    public function sms() {
         return $this->success([
             'token' => '123456'
         ]);
     }
 
-    public function register() {
+    public function password() {
         return $this->success([
             'token' => '123456'
         ]);

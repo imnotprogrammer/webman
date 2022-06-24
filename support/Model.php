@@ -19,4 +19,8 @@ class Model extends BaseModel
 
     protected $dateFormat = 'U';
 
+    const DELETED_AT = 'delete_time';
+    const CREATED_AT = 'create_time';
+    const UPDATED_AT = 'update_time';
+
 }

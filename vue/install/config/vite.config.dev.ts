@@ -10,6 +10,13 @@ export default mergeConfig(
       fs: {
         strict: true,
       },
+      proxy: {
+        '/admin': {
+          target: 'http://www.loan.com',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/admin/, '/admin')
+        },
+      }
     },
     plugins: [
       eslint({

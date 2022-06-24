@@ -2,7 +2,11 @@
 
 namespace app\controller;
 
+use App\admin\service\Menu;
 use App\Controller;
+use app\model\AdminPermission;
+use app\model\AdminRole;
+use app\model\AdminUser;
 use support\Db;
 use support\Redis;
 use support\Request;
@@ -46,7 +50,12 @@ class Index extends Controller
 
     public function json(Request $request)
     {
-        return json(['code' => 0, 'msg' => 'ok']);
+        $userId = $request->get('userId', 1);
+        
+        return json(['code' => 0, 'msg' => 'ok', 'data' => [
+            'menu' => Menu::getUserMenus($userId),
+            'permissions' => Menu::getUserPermissions($userId)
+        ]], JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
     }
 
     public function login() {

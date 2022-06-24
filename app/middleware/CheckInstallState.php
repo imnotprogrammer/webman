@@ -9,10 +9,12 @@ use Webman\Http\Request;
 class CheckInstallState implements MiddlewareInterface
 {
 
+    private $status = false;
+
     public function process(Request $request, callable $next) : Response
     {
         $install = new Install();
-        if (!$install->isFinished()) {
+        if ($this->status && !$install->isFinished()) {
             return redirect($install->getStepUrl());
         }
 

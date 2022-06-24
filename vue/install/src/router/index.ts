@@ -12,7 +12,9 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: 'login',
+      redirect: {
+        name: 'Workplace'
+      },
     },
     {
       path: '/login',
@@ -22,6 +24,7 @@ const router = createRouter({
         requiresAuth: false,
       },
     },
+
     ...appRoutes,
     {
       path: '/:pathMatch(.*)*',

@@ -14,4 +14,6 @@
 
 return [
     '' => support\exception\Handler::class,
+    'admin' => App\exception\handler\AdminHandler::class,
+    'api' => App\exception\handler\ApiHandler::class,
 ];

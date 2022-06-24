@@ -14,7 +14,7 @@
 
 return [
 
-    'type' => 'redis_cluster', // or redis or redis_cluster
+    'type' => 'redis', // or redis or redis_cluster
 
     'handler' => \App\utils\RedisSessionHandler::class,
 

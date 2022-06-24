@@ -12,9 +12,16 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use app\middleware\CheckLogin;
+
 return [
     //'' => [],
-    '' => [
+    'admin' => [
+        //\app\middleware\CheckInstallState::class
+        CheckLogin::class
+    ],
+
+    'api' => [
         \app\middleware\CheckInstallState::class
     ]
 ];

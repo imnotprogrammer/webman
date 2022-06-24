@@ -62,6 +62,7 @@
   const route = useRoute();
   const permission = usePermission();
   useResponsive(true);
+  appStore.fetchServerMenuConfig();
   const navbarHeight = `60px`;
   const navbar = computed(() => appStore.navbar);
   const renderMenu = computed(() => appStore.menu);

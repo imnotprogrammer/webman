@@ -8,6 +8,7 @@ use support\Request;
 
 class Install extends Controller
 {
+    public function init() {}
     public function base(Request $request, InstallValidate $installValidate)
     {
 
@@ -26,17 +27,24 @@ class Install extends Controller
         return $this->success();
     }
 
-    public function saveDatabase(Request $request, InstallValidate $validate)
+    public function saveDatabase(Request $request)
     {
-        if (!$validate->scene('database')->check($request->all())) {
+        $databaseHost = $request->post('host', '');
+        $databaseName = $request->post('name', '');
+        $databasePort = $request->post('port', '3306');
+        $databaseUser = $request->post('user', '');
+        $databasePassword = $request->post('password', '');
+
+        $validate = new InstallValidate();
+        if (!$validate->scene('database')->check([
+            'databaseHost' => $databaseHost,
+            'databaseName' => $databaseName,
+            'databasePort' => $databasePort,
+            'databaseUser' => $databaseUser,
+            'databasePassword' => $databasePassword,
+        ])) {
             return $this->failed($validate->getError());
         }
-
-        $databaseHost = $request->post('databaseHost', '');
-        $databaseName = $request->post('databaseName', '');
-        $databasePort = $request->post('databasePort', '3306');
-        $databaseUser = $request->post('databaseUser', '');
-        $databasePassword = $request->post('databasePassword', '');
 
         $installUtils = new \App\utils\Install();
         $installUtils->writeDatabase($databaseHost, $databaseName, $databasePort, $databaseUser, $databasePassword);

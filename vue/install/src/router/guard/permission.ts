@@ -12,7 +12,10 @@ export default function setupPermissionGuard(router: Router) {
     const userStore = useUserStore();
     async function crossroads() {
       const Permission = usePermission();
-      if (Permission.accessRouter(to)) next();
+      if (Permission.accessRouter(to)) {
+        console.log('next:', to);
+        next();
+      }
       else {
         const destination = Permission.findFirstPermissionRoute(
           appRoutes,

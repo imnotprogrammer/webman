@@ -32,7 +32,7 @@ setupMock({
           registrationDate: '2013-05-10 12:10:00',
           accountId: '15012312300',
           certification: 1,
-          role,
+          role
         });
       }
       return failResponseWrap(null, '未登录', 50008);
@@ -93,7 +93,6 @@ setupMock({
               meta: {
                 locale: 'menu.server.monitor',
                 requiresAuth: true,
-                roles: ['admin'],
               },
             },
             {
@@ -106,6 +105,25 @@ setupMock({
             },
           ],
         },
+        {
+          path: '/system',
+          name: 'system',
+          meta: {
+            icon: 'icon-dashboard',
+            locale: "menu.system",
+
+            requiresAuth: true,
+          },
+          children: [
+            {
+              path: 'user',
+              name: 'user',
+              meta: {
+                locale: 'menu.system.user',
+              },
+            },
+          ]
+        }
       ];
       return successResponseWrap(menuList);
     });

@@ -12,21 +12,30 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use app\controller\Index;
 use Webman\Route;
 
-Route::get('/', function () {
+Route::get('/', [Index::class, 'json']);
 
-});
+Route::post('/database/save', [\app\controller\Install::class, 'saveDatabase']);
+Route::post('/redis/save', [\app\controller\Install::class, 'saveRedis']);
+Route::post('/base/save', [\app\controller\Install::class, 'base']);
+Route::post('/start/init', [\app\controller\Install::class, 'init']);
 
-Route::group('/admin', function () {
-    Route::get('', [\App\admin\controller\Home::class, 'index']);
-    Route::get('/login', [\App\admin\controller\auth\Login::class, 'login']);
-});
+$routeMapPath = base_path() . DIRECTORY_SEPARATOR . 'route';
+
+$needLoadCollection = [
+     'api.php',
+     'admin.php'
+];
+
+/**
+ * 加载映射文件
+ */
+foreach ($needLoadCollection as $routeFile) {
+    require_once $routeMapPath . DIRECTORY_SEPARATOR . $routeFile;
+}
 
 
-Route::group('/api', function () {
-    Route::get('/register', [\App\api\controller\Login::class, 'register']);
-    Route::get('/login', [\App\api\controller\Login::class, 'login']);
-});
 
 
