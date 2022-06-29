@@ -46,8 +46,8 @@ class Login extends Controller
             return $this->success([
                 'token' => $token,
                 'user' => [     
-                    'name' => '',
-                    'avatar' => '',
+                    'name' => $user->name,
+                    'avatar' => $user->getAvatar(),
                 ]
             ]);
         } else {

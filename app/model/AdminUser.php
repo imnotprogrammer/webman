@@ -44,7 +44,12 @@ class AdminUser extends Model
     }
 
     public function permissions() {
-        return $this->hasManyThrough('admin_role_permissions', 'admin_role_users', 'user_id', 'permission_id', 'admin_id', 'role_id');
+        return $this->hasManyThrough('admin_role_permissions',
+            'admin_role_users',
+            'user_id',
+            'permission_id',
+            'admin_id',
+            'role_id');
     }
 
     public function checkPassword($password) {
@@ -54,6 +59,10 @@ class AdminUser extends Model
 
     public function getAdminId() {
         return $this->admin_id;
+    }
+
+    public function getAvatar() {
+        return $this->avatar ? : 'default.png';
     }
 
 }

@@ -20,6 +20,7 @@ class ResetAdminPasswordCommand extends Command
      */
     protected function configure()
     {
+        $this->addArgument('username', InputArgument::OPTIONAL, 'Rset Admin User');
         $this->addArgument('password', InputArgument::OPTIONAL, 'Rest Admin Password');
     }
 
@@ -27,16 +28,18 @@ class ResetAdminPasswordCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
+     * @throws \app\exception\AdminException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $username = $input->getArgument('username') ?: AdminUser::DEFAULT_ADMIN_USERNAME;
         $password = $input->getArgument('password') ?: '';
-        $password = Admin::resetAdminPassword($password);
+        $password = Admin::resetAdminPassword($username, $password);
 
         if ($password) {
             $output->writeln('Reset Admin Password Success!');
             $output->writeln('=============================');
-            $output->writeln('Account: '. AdminUser::DEFAULT_ADMIN_USERNAME);
+            $output->writeln('Account: '. $username);
             $output->writeln('Password: '. $password);
         } else {
             $output->writeln('Rest Admin Password Failed.');

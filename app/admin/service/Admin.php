@@ -13,22 +13,26 @@ class Admin
     /**
      * 重置管理员用户密码
      * @param string $password
+     * @param string $username
      * @return string|null
+     * @throws AdminException
      */
-    public static function resetAdminPassword(string $password = ''): ?string
+    public static function resetAdminPassword(string $username, string $password = ''): ?string
     {
-
         $salt = generate_random_string();
         if (!$password) {
             $password = generate_random_string(10);
         }
 
-        $adminUser = AdminUser::findOrNew(AdminUser::DEFAULT_ADMIN_ID);
+        $adminUser = AdminUser::where('username', $username)->first();
 
-        $adminUser->name = AdminUser::DEFAULT_ADMIN_NAME;
-        $adminUser->username = AdminUser::DEFAULT_ADMIN_USERNAME;
+        if (!$adminUser) {
+            throw new AdminException(Error::UserNotExisit);
+        }
+
         $adminUser->password = static::createPassword($password, $salt);
         $adminUser->salt = $salt;
+
         $adminUser->save();
 
         return $password;

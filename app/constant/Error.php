@@ -39,6 +39,9 @@ class Error {
     /** @var int 用户已经存在 */
     const UserExisit = 50036;
 
+    /** @var int 用户不存在 */
+    const UserNotExisit = 50037;
+
     /** @var int 系统错误 */
     const SystemError = 50000;
 
