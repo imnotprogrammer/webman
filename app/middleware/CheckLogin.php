@@ -4,6 +4,7 @@ namespace app\middleware;
 use App\admin\service\Menu;
 use App\admin\service\Token;
 use app\constant\Error;
+use App\constant\Permissions;
 use app\exception\AdminException;
 use app\model\AdminUser;
 use Webman\MiddlewareInterface;
@@ -12,14 +13,24 @@ use Webman\Http\Request;
 
 class CheckLogin implements MiddlewareInterface
 {
+    /**
+     * @var string[] 不需要进行登录验证的路由
+     */
     private $notCheckLoginRouteName = [
-        'login',
+        Permissions::PERMISSION_LOGIN,
     ];
 
+    /**
+     * @var string[] 不需要进行权限验证的路由
+     */
     private $notCheckPermissionRoute = [
-        'user-info',
+        Permissions::PERMISSION_USER_INFO,
+        Permissions::PERMISSION_USER_MENUS
     ];
 
+    /**
+     * @throws AdminException
+     */
     public function process(Request $request, callable $next) : Response
     {
         $token = $request->header('token');

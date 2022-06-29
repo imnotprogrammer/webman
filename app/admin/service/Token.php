@@ -6,13 +6,23 @@ use app\constant\Error;
 use app\exception\AdminException;
 
 class Token {
+    /**
+     * Token过期时间
+     */
     const DEFAULT_EXPIRE_TIME = 5 * 3600;
 
-    const TOKEN_LENGTH = 4;
     /**
-     * 生成token;
+     * Token 包含字段数
      */
-    public static function createToken($userId, $username) {
+    const TOKEN_LENGTH = 4;
+
+    /**
+     * @param int $userId 用户ID
+     * @param string $username 用户名称
+     * @return string
+     */
+    public static function createToken(int $userId, string $username): string
+    {
         $currentTime = time();
         $expireAt = $currentTime + config('common.token.expireTime', self::DEFAULT_EXPIRE_TIME);
         $splitChar = config('common.token.splitCode', '-');
@@ -23,13 +33,20 @@ class Token {
         ];
 
         $userInfoStr = implode($splitChar, $userBase);
-        return sprintf('%s%s%s', $userInfoStr, $splitChar, hash_hmac('md5', $userInfoStr, config('common.token.signature')));
+        return sprintf('%s%s%s',
+            $userInfoStr,
+            $splitChar,
+            hash_hmac('md5', $userInfoStr, config('common.token.signature'))
+        );
     }
 
     /**
      * @param string  token 校验token是不是正确的
+     * @return int
+     * @throws AdminException
      */
-    public static function checkToken($token) {
+    public static function checkToken($token): int
+    {
         $data = explode(config('common.token.splitCode', '-'), $token);
         if (count($data) != self::TOKEN_LENGTH) {
             throw new AdminException(Error::SystemError);

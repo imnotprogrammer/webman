@@ -77,4 +77,14 @@ class Install extends Controller
         }
         return $this->success();
     }
+
+    public function write() {
+        $array = [
+            '12312' => '2131',
+            'wqeqw' => 'sadasd',
+            'wqeqwewqe' => 'sadadas'
+        ];
+        file_put_contents(runtime_path() . DIRECTORY_SEPARATOR . '/1.log', json_encode($array).PHP_EOL, FILE_APPEND);
+        return $this->success();
+    }
 }

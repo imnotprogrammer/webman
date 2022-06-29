@@ -2,6 +2,7 @@
 
 namespace app\model;
 
+use App\admin\service\Admin;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use support\Model;
 
@@ -11,6 +12,10 @@ class AdminUser extends Model
      * 默认管理员ID
      */
     const DEFAULT_ADMIN_ID = 1;
+    /** @var string 管理员名称 */
+    const DEFAULT_ADMIN_NAME = 'Administrator';
+    /** @var string 管理员登录账号 */
+    const DEFAULT_ADMIN_USERNAME = 'admin';
     /**
      * The table associated with the model.
      *
@@ -43,8 +48,9 @@ class AdminUser extends Model
     }
 
     public function checkPassword($password) {
-        return $this->password === md5(md5($password). $this->salt);
+        return $this->password === Admin::createPassword($password, $this->salt);
     }
+
 
     public function getAdminId() {
         return $this->admin_id;

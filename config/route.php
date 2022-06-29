@@ -21,7 +21,7 @@ Route::post('/database/save', [\app\controller\Install::class, 'saveDatabase']);
 Route::post('/redis/save', [\app\controller\Install::class, 'saveRedis']);
 Route::post('/base/save', [\app\controller\Install::class, 'base']);
 Route::post('/start/init', [\app\controller\Install::class, 'init']);
-
+Route::get('/test/write', [\app\controller\Install::class, 'write']);
 $routeMapPath = base_path() . DIRECTORY_SEPARATOR . 'route';
 
 $needLoadCollection = [

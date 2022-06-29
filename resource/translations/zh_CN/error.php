@@ -14,5 +14,7 @@ return [
     Error::LoginUsernameNotNull => '请输入登录用户名',
     Error::LoginPasswordNotNull => '请输入登录密码',
     Error::LoginUsernameMaxLength => '登录用户名太长',
-    Error::LoginPasswordMaxLength => '登录密码太长'
+    Error::LoginPasswordMaxLength => '登录密码太长',
+
+    Error::UserExisit => '用户已经存在'
 ];

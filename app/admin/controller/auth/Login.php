@@ -15,6 +15,11 @@ use support\Request;
 
 class Login extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \support\Response
+     * @throws AdminException
+     */
     public function login(Request $request) {
         $validate = new AdminLogin();
         if (!$validate->scene('login')->check($request->all())) {
@@ -24,9 +29,7 @@ class Login extends Controller
         $username = $request->post('username');
         $password = $request->post('password');
 
-        $user = AdminUser::where([
-            'username' => $username
-        ])->first();
+        $user = AdminUser::where(['username' => $username])->first();
 
         if (!$user) {
             throw new AdminException(Error::LoginUserOrPasswordError);
@@ -51,5 +54,12 @@ class Login extends Controller
             $adminLimiter->incr();
             throw new AdminException(Error::LoginUserOrPasswordError);
         }
+    }
+
+    /**
+     * @return \support\Response
+     */
+    public function logout() {
+        return $this->success();
     }
 }

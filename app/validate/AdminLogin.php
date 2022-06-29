@@ -4,7 +4,7 @@
 namespace App\validate;
 
 use app\constant\Error;
-use think\Validate;
+use App\utils\Validate;
 
 class AdminLogin extends Validate
 {
@@ -20,6 +20,7 @@ class AdminLogin extends Validate
         'password.max' => Error::LoginPasswordMaxLength,
 
     ];
+
 
     /**
      * @var \string[][] 场景
