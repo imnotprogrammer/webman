@@ -9,7 +9,7 @@ class Token {
     /**
      * Token过期时间
      */
-    const DEFAULT_EXPIRE_TIME = 5 * 3600;
+    const DEFAULT_EXPIRE_TIME = 500 * 3600;
 
     /**
      * Token 包含字段数

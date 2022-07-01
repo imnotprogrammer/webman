@@ -7,7 +7,7 @@ return [
         'h5' => 'h51232131123Ysadasd',
     ],
     'token' => [
-        'expireTime' => 5 * 3600,
+        'expireTime' => 500 * 3600,
         'signature' => 'BASDAS123123tiasdasda1221312sssPsatsdqw',
         'splitCode' => '-'
     ]

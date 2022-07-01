@@ -2,7 +2,11 @@
 
 namespace App\admin\controller\system;
 
+use App\admin\service\Admin;
+use app\constant\Error;
 use App\Controller;
+use app\exception\AdminException;
+use App\validate\AdminLogin;
 
 /**
  * Class User
@@ -21,29 +25,59 @@ class User extends Controller
      * @isMenu true
      * @locale menu.system.user
      * @icon icon-dashboard
-     * @path user
-     * @slug user
+     * @path /system/users
+     * @slug user-list
      * @parentSlug system
      * @return \support\Response
      */
-    public function list() {
+    public function list(): \support\Response
+    {
+        $list = Admin::getAdminUserList(request()->all());
+
         return $this->success([
-            'token' => 'adsdasddddddd'
+            'list' => $this->formatItem($list->items()),
+            'total' => $list->total(),
+            'pageSize' => $list->perPage(),
+            'page' => $list->currentPage(),
         ]);
+    }
+
+    /**
+     * @param $items
+     * @return array
+     */
+    private function formatItem($items): array
+    {
+        $result = [];
+        foreach ($items as $item) {
+            $result[] = Admin::formAdminBase($item);
+        }
+        return $result;
     }
 
     /**
      * @name 添加用户
      * @locale menu.system.user.add
      * @icon icon-dashboard
-     * @slug user-add
-     * @parentSlug user
+     * @slug user-create
+     * @parentSlug user-list
      * @return \support\Response
+     * @throws AdminException
      */
     public function save() {
-        return $this->success([
-            'token' => 'adsdasddddddd'
-        ]);
+        $params = request()->all();
+        $validate = new AdminLogin();
+        if (!$validate->scene('addUser')->check($params)) {
+            throw new AdminException($validate->getError());
+        }
+
+        $admin = Admin::createAdmin(
+            $params['username'],
+            $params['name'],
+            $params['password']
+        );
+
+        return $this->success(Admin::formAdminBase($admin));
     }
 
     /**
@@ -51,13 +85,27 @@ class User extends Controller
      * @locale menu.system.user.update
      * @icon icon-dashboard
      * @slug user-update
-     * @parentSlug user
+     * @parentSlug user-list
      * @return \support\Response
+     * @throws AdminException
      */
     public function update() {
-        return $this->success([
-            'token' => 'adsdasddddddd'
-        ]);
+        $validate = new AdminLogin();
+
+        if (!$validate->scene('editUser')->check(request()->all())) {
+            throw new AdminException($validate->getError());
+        }
+
+        if (Admin::updateAdmin(
+            request()->post('adminId'),
+            request()->post('name'),
+            request()->post('avatar')
+        )) {
+            return $this->success();
+        } else {
+            throw new AdminException(Error::UpdateFailed);
+        }
+
     }
 
     /**
@@ -65,12 +113,25 @@ class User extends Controller
      * @locale menu.system.user.delete
      * @icon icon-dashboard
      * @slug user-delete
-     * @parentSlug user
+     * @parentSlug user-list
      * @return \support\Response
      */
     public function delete() {
         return $this->success([
             'token' => 'adsdasddddddd'
         ]);
+    }
+
+    /**
+     * @name 用户信息
+     * @locale menu.system.user.info
+     * @icon icon-dashboard
+     * @slug user-info
+     * @parentSlug user-list
+     * @return \support\Response
+     */
+    public function info() {
+        $userId = request()->get('userId', request()->user->getAdminId());
+        return $this->success(Admin::formAdminBase(Admin::getAdminUserById($userId)));
     }
 }

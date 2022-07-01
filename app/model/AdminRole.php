@@ -2,9 +2,20 @@
 
 namespace app\model;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use support\Model;
 
+/**
+ * Class AdminRole
+ * @package app\model
+ * @property int $role_id
+ * @property string $name
+ * @property string $slug
+ * @property Carbon $create_time
+ * @property Carbon $update_time
+ * @property Carbon $delete_time
+ */
 class AdminRole extends Model
 {
     /**
@@ -20,7 +31,7 @@ class AdminRole extends Model
      * @var string
      */
     protected $primaryKey = 'role_id';
-    
+
     /**
      * A role belongs to many users.
      *
@@ -38,6 +49,11 @@ class AdminRole extends Model
      */
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(AdminPermission::class, 'admin_role_permissions', 'permission_id', 'role_id');
+        return $this->belongsToMany(
+            AdminPermission::class,
+            AdminRolePermissions::class,
+            'role_id',
+            'permission_id')
+            ->withTimestamps();
     }
 }

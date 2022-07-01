@@ -4,9 +4,11 @@
 namespace App\admin\service;
 
 
+use App\constant\AdminPage;
 use app\constant\Error;
 use app\exception\AdminException;
 use app\model\AdminUser;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class Admin
 {
@@ -54,10 +56,10 @@ class Admin
      * @param $username
      * @param $name
      * @param $password
-     * @return bool
+     * @return AdminUser
      * @throws AdminException
      */
-    public static function createAdmin($username, $name, $password): bool
+    public static function createAdmin($username, $name, $password)
     {
         $user = AdminUser::where('username', $username)->first();
         if ($user) {
@@ -73,7 +75,97 @@ class Admin
             'salt' => $salt
         ]);
 
-        return $user->save();
+        $user->save();
+
+        return $user;
+    }
+
+    /**
+     * @param $adminId
+     * @return mixed
+     */
+    public static function deleteAdmin($adminId) {
+        return AdminUser::where('admin_id', $adminId)->delete();
+    }
+
+    /**
+     * @param $adminId
+     * @param $username
+     * @param $name
+     * @param $avatar
+     */
+    public static function updateAdmin($adminId, $name, $avatar) {
+
+        if ($adminId == AdminUser::DEFAULT_ADMIN_ID) {
+            return false;
+        }
+
+        $admin = AdminUser::query()->find($adminId);
+
+        if (!$admin) {
+            return false;
+        }
+
+        $admin->name = $name;
+        $admin->avatar = $avatar;
+
+        return $admin->save();
+    }
+
+    /**
+     * 获取管理员列表
+     * @param array $search
+     * @return LengthAwarePaginator
+     */
+    public static function getAdminUserList(array $search = []): LengthAwarePaginator
+    {
+
+        $perPage = $search['pageSize'] ?? AdminPage::PER_PAGE;
+        $page = $search['page'] ?? AdminPage::DEFAULT_PAGE;
+        $name = $search['name'] ?? '';
+
+        $query = (new AdminUser())->query();
+
+        $query->when($name, function ($query, $name) {
+            $query->where('name', 'like', sprintf("%%%s%%", $name));
+        });
+
+        return $query->paginate(
+            $perPage,
+            AdminPage::DEFAULT_COLOUMN,
+            AdminPage::PAGE_NAME,
+            $page
+        );
+    }
+
+    /**
+     * @param $userId
+     * @return array
+     */
+    public static function getAdminUserById($userId)
+    {
+        $admin = AdminUser::find($userId);
+
+        if (!$admin) {
+            return [];
+        }
+
+        return $admin;
+    }
+
+    /**
+     * @param AdminUser $admin
+     * @return array
+     */
+    public static function formAdminBase(AdminUser $admin): array
+    {
+        return [
+            'adminId' => $admin->getAdminId(),
+            'name' => $admin->name,
+            'username' => $admin->username,
+            'avatar' => $admin->getAvatar(),
+            'createTime' => $admin->create_time
+        ];
     }
 
 }

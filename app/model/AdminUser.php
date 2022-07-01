@@ -8,9 +8,7 @@ use support\Model;
 
 class AdminUser extends Model
 {
-    /**
-     * 默认管理员ID
-     */
+    /** @var int 默认管理员ID(最高权限) */
     const DEFAULT_ADMIN_ID = 1;
     /** @var string 管理员名称 */
     const DEFAULT_ADMIN_NAME = 'Administrator';

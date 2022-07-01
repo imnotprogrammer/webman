@@ -42,6 +42,12 @@ class Error {
     /** @var int 用户不存在 */
     const UserNotExisit = 50037;
 
+    /** @var int 更新失败 */
+    const UpdateFailed = 50038;
+
+    /** @var int 保存成功 */
+    const SaveFailed = 50039;
+
     /** @var int 系统错误 */
     const SystemError = 50000;
 

@@ -2,20 +2,19 @@
 
 namespace App\admin\controller\system;
 
-use App\admin\service\Admin;
 use App\admin\service\Role;
 use App\Controller;
 use support\Request;
 
-class Roles extends Controller
+class Permissions extends Controller
 {
     /**
-     * @name 角色列表
+     * @name 权限列表
      * @isMenu true
      * @locale menu.system.roles
      * @icon icon-dashboard
      * @path roles
-     * @slug role-list
+     * @slug permission-list
      * @parentSlug system
      * @return \support\Response
      */
@@ -31,11 +30,11 @@ class Roles extends Controller
     }
 
     /**
-     * @name 添加角色
+     * @name 添加权限
      * @locale menu.system.role.add
      * @icon icon-dashboard
-     * @slug role-create
-     * @parentSlug role-list
+     * @slug permission-create
+     * @parentSlug permission-list
      * @return \support\Response
      */
     public function save(Request $request) {
@@ -49,11 +48,11 @@ class Roles extends Controller
     }
 
     /**
-     * @name 更新角色
+     * @name 更新权限
      * @locale menu.system.role.update
      * @icon icon-dashboard
-     * @slug role-update
-     * @parentSlug role-list
+     * @slug permission-update
+     * @parentSlug permission-list
      * @return \support\Response
      * @throws \app\exception\AdminException
      */
@@ -66,15 +65,14 @@ class Roles extends Controller
     }
 
     /**
-     * @name 删除角色
+     * @name 删除权限
      * @locale menu.system.role.delete
      * @icon icon-dashboard
-     * @slug role-delete
-     * @parentSlug role-list
+     * @slug permission-delete
+     * @parentSlug permission-list
      * @return \support\Response
      */
-    public function delete(Request $request) {
-        $roleIds = explode(',', $request->post('roleIds'));
+    public function delete() {
         return $this->success([
             'token' => 'adsdasddddddd'
         ]);

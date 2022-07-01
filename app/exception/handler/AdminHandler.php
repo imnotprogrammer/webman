@@ -38,10 +38,15 @@ class AdminHandler extends ExceptionHandler
 
     public function render(Request $request, Throwable $exception): Response
     {
-        $code = $exception->getCode();
         if ($request->expectsJson()) {
+            if ($exception instanceof AdminException) {
+                $code = $exception->getCode();
+            } else {
+                $code = Error::DefaultErrorCode;
+            }
+
             $json = [
-                'code' => $code ? $code : Error::DefaultErrorCode,
+                'code' => $code,
                 'msg' => $exception->getMessage()
             ];
             $this->_debug && $json['data'] = [

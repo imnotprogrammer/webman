@@ -9,8 +9,12 @@ use App\utils\Validate;
 class AdminLogin extends Validate
 {
     protected $rule =   [
+        'name'   => 'require|max:100',
         'username'   => 'require|max:100',
         'password'   => 'require|max:100',
+        'confirmPassword'   => 'require|max:100',
+        'avatar' => 'max:1000',
+        'adminId' => 'require',
     ];
 
     protected $message  =   [
@@ -18,7 +22,11 @@ class AdminLogin extends Validate
         'username.max' => Error::LoginUsernameMaxLength,
         'password.require' => Error::LoginPasswordNotNull,
         'password.max' => Error::LoginPasswordMaxLength,
-
+        'confirmPassword.require' => Error::LoginPasswordNotNull,
+        'confirmPassword.max' => Error::LoginPasswordMaxLength,
+        'avatar.max' => Error::LoginPasswordMaxLength,
+        'adminId.require' => Error::LoginPasswordMaxLength,
+        //'adminId.int' => Error::LoginPasswordMaxLength,
     ];
 
 
@@ -27,7 +35,8 @@ class AdminLogin extends Validate
      */
     protected $scene = [
         'login'  =>  ['username', 'password'],
-        'database'  =>  ['databaseName','databaseHost', 'databaseUser', 'databasePort'],
-        'redis'  =>  ['redisHost','redisPort', 'redisAuth'],
+        'addUser'  =>  ['username','name', 'password', 'confirmPassword'],
+        'editUser'  =>  ['name', 'adminId'],
+        'deleteUser'  =>  ['adminId'],
     ];
 }

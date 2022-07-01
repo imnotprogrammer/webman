@@ -18,4 +18,7 @@ return [
 
     Error::UserExisit => '用户已经存在',
     Error::UserNotExisit => '用户不存在',
+
+    Error::UpdateFailed => '更新失败',
+    Error::SaveFailed => '保存失败',
 ];
