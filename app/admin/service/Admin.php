@@ -84,8 +84,13 @@ class Admin
      * @param $adminId
      * @return mixed
      */
-    public static function deleteAdmin($adminId) {
-        return AdminUser::where('admin_id', $adminId)->delete();
+    public static function deleteAdmin($adminIds) {
+        $menuIds = array_unique(array_filter($adminIds));
+
+        if (!$menuIds) {
+            return false;
+        }
+        return AdminUser::whereIn('admin_id', $adminIds)->delete();
     }
 
     /**
@@ -94,7 +99,7 @@ class Admin
      * @param $name
      * @param $avatar
      */
-    public static function updateAdmin($adminId, $name, $avatar) {
+    public static function updateAdmin($adminId, $data) {
 
         if ($adminId == AdminUser::DEFAULT_ADMIN_ID) {
             return false;
@@ -106,8 +111,12 @@ class Admin
             return false;
         }
 
-        $admin->name = $name;
-        $admin->avatar = $avatar;
+        $admin->name = $data['name'] ?? $admin->name;
+        $admin->username = $data['username'] ?? $admin->username;
+        $admin->avatar = $data['avatar'] ?? $admin->avatar;
+        $admin->password = $data['password'] ?
+            static::createPassword($data['password'], $admin->salt) :
+            $admin->password;
 
         return $admin->save();
     }
@@ -140,14 +149,14 @@ class Admin
 
     /**
      * @param $userId
-     * @return array
+     * @return AdminUser|null
      */
     public static function getAdminUserById($userId)
     {
         $admin = AdminUser::find($userId);
 
         if (!$admin) {
-            return [];
+            return null;
         }
 
         return $admin;

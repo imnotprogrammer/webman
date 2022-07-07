@@ -4,6 +4,7 @@ namespace app\command;
 
 use App\admin\service\Menu;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -15,14 +16,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateMenuCommand extends Command
 {
     protected static $defaultName = 'menu:create';
-    protected static $defaultDescription = 'init menu list.';
+    protected static $defaultDescription = 'Init admin menu list.';
 
     /**
      * @return void
      */
     protected function configure()
     {
-        //$this->addArgument('name', InputArgument::OPTIONAL, 'Name description');
+        $this->addArgument('isClear', InputArgument::OPTIONAL, 'Is To Clear Old Menu Data?', false);
     }
 
     /**
@@ -32,7 +33,9 @@ class CreateMenuCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        Menu::init();
+        $isClear = $input->getArgument('isClear');
+
+        Menu::init($isClear === 'true');
         return self::SUCCESS;
     }
 

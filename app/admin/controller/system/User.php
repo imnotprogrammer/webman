@@ -7,11 +7,12 @@ use app\constant\Error;
 use App\Controller;
 use app\exception\AdminException;
 use App\validate\AdminLogin;
+use support\Request;
 
 /**
  * Class User
  * @package App\admin\controller\system
- * @name 用户管理
+ * @name 系统管理
  * @isMenu true
  * @locale menu.system
  * @icon icon-dashboard
@@ -96,11 +97,9 @@ class User extends Controller
             throw new AdminException($validate->getError());
         }
 
-        if (Admin::updateAdmin(
-            request()->post('adminId'),
-            request()->post('name'),
-            request()->post('avatar')
-        )) {
+        $data = request()->post();
+        unset($data['username']);
+        if (Admin::updateAdmin(request()->post('adminId'), $data )) {
             return $this->success();
         } else {
             throw new AdminException(Error::UpdateFailed);
@@ -116,10 +115,14 @@ class User extends Controller
      * @parentSlug user-list
      * @return \support\Response
      */
-    public function delete() {
-        return $this->success([
-            'token' => 'adsdasddddddd'
-        ]);
+    public function delete(Request $request) {
+        $adminIds = $request->post('adminIds', '');
+        $adminIds = explode(',', $adminIds);
+        if (Admin::deleteAdmin($adminIds)) {
+            return $this->success();
+        }
+
+        return $this->failed();
     }
 
     /**
@@ -132,6 +135,7 @@ class User extends Controller
      */
     public function info() {
         $userId = request()->get('userId', request()->user->getAdminId());
-        return $this->success(Admin::formAdminBase(Admin::getAdminUserById($userId)));
+        $admin = Admin::getAdminUserById($userId);
+        return $this->success(Admin::formAdminBase($admin));
     }
 }

@@ -12,7 +12,7 @@ class AdminLogin extends Validate
         'name'   => 'require|max:100',
         'username'   => 'require|max:100',
         'password'   => 'require|max:100',
-        'confirmPassword'   => 'require|max:100',
+        'confirmPassword'   => 'require|max:100|confirm:password',
         'avatar' => 'max:1000',
         'adminId' => 'require',
     ];
@@ -24,6 +24,7 @@ class AdminLogin extends Validate
         'password.max' => Error::LoginPasswordMaxLength,
         'confirmPassword.require' => Error::LoginPasswordNotNull,
         'confirmPassword.max' => Error::LoginPasswordMaxLength,
+        'confirmPassword.confirm' => Error::LoginPasswordConfirmError,
         'avatar.max' => Error::LoginPasswordMaxLength,
         'adminId.require' => Error::LoginPasswordMaxLength,
         //'adminId.int' => Error::LoginPasswordMaxLength,
@@ -36,7 +37,7 @@ class AdminLogin extends Validate
     protected $scene = [
         'login'  =>  ['username', 'password'],
         'addUser'  =>  ['username','name', 'password', 'confirmPassword'],
-        'editUser'  =>  ['name', 'adminId'],
+        'editUser'  =>  ['name', 'adminId', 'password'],
         'deleteUser'  =>  ['adminId'],
     ];
 }

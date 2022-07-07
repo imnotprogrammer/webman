@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MakeJobCommand extends Command
 {
     protected static $defaultName = 'make:job';
-    protected static $defaultDescription = 'Make Crontab Job';
+    protected static $defaultDescription = 'Make crontab job';
 
     protected $jobDir = 'crontab';
 

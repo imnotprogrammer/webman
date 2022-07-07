@@ -1,12 +1,14 @@
 <?php
 
-namespace app\model;
+namespace App\model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use support\Model;
 
 class AdminPermission extends Model
 {
+    use SoftDeletes;
     /**
      * 菜单标识-是
      */
@@ -16,6 +18,7 @@ class AdminPermission extends Model
      * 菜单标识-不是
      */
     const MENU_NO = 0;
+
     /**
      * The table associated with the model.
      *
@@ -70,9 +73,34 @@ class AdminPermission extends Model
     }
 
     /**
+     * 所有字节点
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function allChildren()
+    {
+        return $this->hasMany(AdminPermission::class, 'parent_id', 'permission_id')
+            ->with('allChildren')
+            ->orderBy('order', 'desc')
+            ->orderBy('permission_id', 'desc');
+    }
+
+    /**
      * 获取所有菜单节点
      */
     public static function allNodes()
+    {
+        return self::query()
+            ->whereParentId(0)
+            ->with('allChildren')
+            ->orderBy('order', 'desc')
+            ->orderBy('permission_id', 'desc')
+            ->get();
+    }
+
+    /**
+     * 获取所有菜单节点
+     */
+    public static function menuNodes()
     {
         return self::query()
             ->whereParentId(0)

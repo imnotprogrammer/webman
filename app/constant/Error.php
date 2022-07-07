@@ -54,9 +54,24 @@ class Error {
     /** @var int 默认返回错误码 */
     const DefaultErrorCode = self::SystemError;
 
-    /** @var string 多语言文件 */
-    const TRANS_FILE = 'error';
-
+    /** @var int 菜单名称不能为空 */
+    const MenuNameNotNULL = 50040;
+    /** @var int 菜单名称不能超过100个字符 */
+    const MenuNameMaxLength = 50041;
+    /** @var int 菜单标识不能为空 */
+    const MenuSlugNotNull = 50042;
+    /** @var int 菜单标识长度不能超过限制 */
+    const MenuSlugMaxLength = 50043;
+    /** @var int 菜单标识唯一 */
+    const MenuSlugUniqiued = 50044;
+    /** @var int 多语言key不能为空 */
+    const MenuLocaleNotNUll = 50045;
+    /** @var int 多语言key超过最大字符串长度 */
+    const MenuLocaleMaxLength = 50046;
+    /** @var int 多语言key超过最大字符串长度 */
+    const MenuPermissionIdNotNULL = 50047;
+    /** @var int 两次密码不一致 */
+    const LoginPasswordConfirmError = 50048;
 
     /**
      * 获取错误码信息通过错误码

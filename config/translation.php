@@ -22,4 +22,5 @@ return [
     'fallback_locale' => ['zh_CN', 'en'],
     // Folder where language files are stored
     'path' => base_path() . '/resource/translations',
+    'error_trans' => 'error',
 ];

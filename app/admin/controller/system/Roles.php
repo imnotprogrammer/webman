@@ -5,6 +5,7 @@ namespace App\admin\controller\system;
 use App\admin\service\Admin;
 use App\admin\service\Role;
 use App\Controller;
+use app\model\AdminRole;
 use support\Request;
 
 class Roles extends Controller
@@ -75,8 +76,22 @@ class Roles extends Controller
      */
     public function delete(Request $request) {
         $roleIds = explode(',', $request->post('roleIds'));
-        return $this->success([
-            'token' => 'adsdasddddddd'
-        ]);
+        Role::deleteRoles($roleIds);
+        return $this->success();
+    }
+
+    /**
+     * @name 角色信息
+     * @locale menu.system.role.info
+     * @icon icon-dashboard
+     * @slug role-info
+     * @parentSlug role-list
+     * @return \support\Response
+     */
+    public function info(Request $request) {
+        $roleId = $request->get('roleId');
+        $role = AdminRole::find($roleId);
+
+        return $this->success($role ? Role::formatRole($role) : []);
     }
 }

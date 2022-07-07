@@ -64,5 +64,8 @@
     "pre-package-uninstall": [
       "support\\Plugin::uninstall"
     ]
+  },
+  "require-dev": {
+    "kriss/webman-eloquent-ide-helper": "^1.0"
   }
 }

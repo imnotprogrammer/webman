@@ -32,32 +32,32 @@ Route::group('/admin', function () {
 
     // 角色
     Route::get('/system/roles', [\App\admin\controller\system\Roles::class, 'list'])
-        ->name(\App\constant\Permissions::PERMISSION_ADMIN_LIST);
+        ->name(\App\constant\Permissions::PERMISSION_ROLE_LIST);
 
     Route::post('/system/role/create', [\App\admin\controller\system\Roles::class, 'save'])
-        ->name(\App\constant\Permissions::PERMISSION_ADMIN_CREATE);
+        ->name(\App\constant\Permissions::PERMISSION_ROLE_CREATE);
 
     Route::get('/system/role/info', [\App\admin\controller\system\Roles::class, 'info'])
-        ->name(\App\constant\Permissions::PERMISSION_ADMIN_INFO);
+        ->name(\App\constant\Permissions::PERMISSION_ROLE_INFO);
 
     Route::post('/system/role/update', [\App\admin\controller\system\Roles::class, 'update'])
-        ->name(\App\constant\Permissions::PERMISSION_ADMIN_UPDATE);
+        ->name(\App\constant\Permissions::PERMISSION_ROLE_UPDATE);
 
     Route::post('/system/role/delete', [\App\admin\controller\system\Roles::class, 'delete'])
-        ->name(\App\constant\Permissions::PERMISSION_ADMIN_DELETE);
+        ->name(\App\constant\Permissions::PERMISSION_ROLE_DELETE);
 
-    // 权限
-    Route::get('/system/permissions', [\App\admin\controller\system\Permissions::class, 'list'])
+    // 权限/菜单
+    Route::get('/system/menus', [\App\admin\controller\system\Menu::class, 'list'])
         ->name(\App\constant\Permissions::PERMISSION_PERMISSION_LIST);
 
-    Route::post('/system/permission/create', [\App\admin\controller\system\Permissions::class, 'save'])
+    Route::post('/system/menu/create', [\App\admin\controller\system\Menu::class, 'save'])
         ->name(\App\constant\Permissions::PERMISSION_PERMISSION_CREATE);
 
-    Route::get('/system/permission/info', [\App\admin\controller\system\Permissions::class, 'info'])
+    Route::get('/system/menu/info', [\App\admin\controller\system\Menu::class, 'info'])
         ->name(\App\constant\Permissions::PERMISSION_PERMISSION_INFO);
 
-    Route::post('/system/permission/update', [\App\admin\controller\system\Permissions::class, 'update'])
+    Route::post('/system/menu/update', [\App\admin\controller\system\Menu::class, 'update'])
         ->name(\App\constant\Permissions::PERMISSION_PERMISSION_UPDATE);
-    Route::post('/system/permission/delete', [\App\admin\controller\system\Permissions::class, 'delete'])
+    Route::post('/system/menu/delete', [\App\admin\controller\system\Menu::class, 'delete'])
         ->name(\App\constant\Permissions::PERMISSION_PERMISSION_DELETE);
 });
