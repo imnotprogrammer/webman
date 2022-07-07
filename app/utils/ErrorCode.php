@@ -8,15 +8,8 @@ use app\constant\Error;
 
 class ErrorCode
 {
-    /**
-     * @var int 错误码开始数值
-     */
-    private $startNumber = 50001;
 
-    /**
-     * @var int 成功错误码
-     */
-    private $successCode = 0;
+    private $startNumber = 50001;
 
     /**
      * @var int 默认系统错误码
@@ -25,9 +18,6 @@ class ErrorCode
 
     /** @var bool  是否分布式控制错误码 */
     private $isHadoop = false;
-
-
-    private $path = '';
 
     /** @var NumberDriverInterface $numberDriver */
     private $numberDriver = null;
@@ -61,18 +51,19 @@ class ErrorCode
         return static::$instance = new static();
     }
 
-    public function setErrorClass($class) {
+    /**
+     * @param $class
+     * @return $this
+     */
+    public function setErrorClass($class): ErrorCode
+    {
         $this->errorClass = $class;
+        return $this;
     }
 
     public function setConfig($config): ErrorCode
     {
         $this->config = $config;
-        return $this;
-    }
-
-    public function setPath($path) {
-        $this->path = $path;
         return $this;
     }
 
@@ -103,11 +94,17 @@ class ErrorCode
         }
 
         $lastNumber = $this->isHadoop ? $this->getNumber() : max($constants);
-        $content = file_get_contents($this->path);
+        $content = file_get_contents($ref->getFileName());
 
-        $firstPos = strpos($content, '{');
-        $endPos = strpos($content, $lastNumber.';');
-        $constStr = substr($content, $firstPos+1, ($endPos - $firstPos) + strlen($lastNumber));
+        if ($lastNumber) {
+            $firstPos = strpos($content, '{');
+            $endPos = strpos($content, $lastNumber.';');
+            $constStr = substr($content, $firstPos+1, ($endPos - $firstPos) + strlen($lastNumber));
+        } else {
+            $constStr = '';
+            $lastNumber = $this->startNumber - 1;
+        }
+
         $spec = $spec ?: $name;
         $spec = <<<EOT
     /** @var int {$spec} */
@@ -119,12 +116,14 @@ EOT;
         }
 
         $constStr = ltrim($constStr . PHP_EOL . sprintf("%s\n    const %s = %s;", $spec, $name, $code));
+        $namespace = $ref->getNamespaceName();
+        $name = $ref->getShortName();
         $template = <<<EOT
 <?php
 
-namespace app\\constant;
+namespace {$namespace};
 
-class Error {
+class {$name} {
     {$constStr}
     /**
      * 获取错误码信息通过错误码
@@ -133,7 +132,7 @@ class Error {
      */
     public static function getMessageByCode(\$code, \$extra = []): ?string
     {
-        return trans( \$code, \$extra, self::TRANS_FILE );
+        return trans( \$code, \$extra, config('translation.error_trans', 'error'));
     }
 }
 EOT;
@@ -141,7 +140,7 @@ EOT;
         if ($this->prePrint) {
             echo $template;
         } else {
-            file_put_contents($this->path, $template);
+            file_put_contents($ref->getFileName(), $template);
         }
 
     }
@@ -151,7 +150,13 @@ EOT;
      * @return mixed
      */
     public function getNumber() {
-        return $this->numberDriver->getLastNumber();
+        $number = $this->numberDriver->getLastNumber();
+        if ($number == 0 ) {
+            $this->numberDriver->incr($number);
+        } else {
+            $this->numberDriver->incr();
+        }
+        return $number;
     }
 
     public function appendLang($name, $lang = []) {
@@ -159,6 +164,7 @@ EOT;
         $langPath = config('translation.path', base_path() . '/resource/translations');
 
         $ref = new \ReflectionClass($this->errorClass);
+        $namespace = $ref->getName();
         $constants = $ref->getConstants();
 
         $transFile = config('translation.error_trans', 'error');
@@ -166,7 +172,7 @@ EOT;
         foreach ($fallbackLocale as $locale) {
             $langFile = $langPath .DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . $transFile . '.php';
 
-            $errors = require_once $langFile;
+            $errors = @require_once $langFile;
             $str = '';
 
             foreach ($constants as $key => $val) {
@@ -199,7 +205,7 @@ EOT;
             $template = <<<EOT
 <?php
 
-use app\constant\Error;
+use {$namespace};
 
 return [
 {$str}

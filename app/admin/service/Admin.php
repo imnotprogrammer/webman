@@ -85,10 +85,10 @@ class Admin
      * @return mixed
      */
     public static function deleteAdmin($adminIds) {
-        $menuIds = array_unique(array_filter($adminIds));
+        $adminIds = array_unique(array_filter($adminIds));
 
-        if (!$menuIds) {
-            return false;
+        if (!$adminIds) {
+            throw new AdminException(Error::AdminDeleteNotNull);
         }
         return AdminUser::whereIn('admin_id', $adminIds)->delete();
     }
@@ -98,17 +98,18 @@ class Admin
      * @param $username
      * @param $name
      * @param $avatar
+     * @throws AdminException
      */
     public static function updateAdmin($adminId, $data) {
 
         if ($adminId == AdminUser::DEFAULT_ADMIN_ID) {
-            return false;
+            throw new AdminException(Error::AdminInfoNotEdit);
         }
 
         $admin = AdminUser::query()->find($adminId);
 
         if (!$admin) {
-            return false;
+            throw new AdminException(Error::AdminNotFound);
         }
 
         $admin->name = $data['name'] ?? $admin->name;
@@ -156,7 +157,7 @@ class Admin
         $admin = AdminUser::find($userId);
 
         if (!$admin) {
-            return null;
+            throw new AdminException(Error::AdminNotFound);
         }
 
         return $admin;

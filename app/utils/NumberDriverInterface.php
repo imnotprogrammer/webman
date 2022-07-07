@@ -11,4 +11,6 @@ namespace App\utils;
 interface NumberDriverInterface
 {
     public function getLastNumber();
+
+    public function incr($step = 1);
 }

@@ -27,4 +27,12 @@ return [
     Error::MenuLocaleMaxLength => '菜单显示名称不能超过 :length 个字符',
     Error::MenuPermissionIdNotNULL => '菜单ID不能为空',
     Error::LoginPasswordConfirmError => '两次密码输入不一致',
+    Error::MenuNotFound => '菜单不存在',
+    Error::MenuDeleteNotNull => '删除的菜单不能为空',
+    Error::AdminDeleteNotNull => '删除的管理员不能为空',
+    Error::AdminInfoNotEdit => '管理员信息不能编辑',
+    Error::AdminNotFound => '后台用户不存在',
+    Error::RoleNotFound => '角色不存在',
+    Error::RoleNameNotNull => '角色名称不能为空',
+    Error::RoleIdNotNull => '角色ID不能为空',
 ];

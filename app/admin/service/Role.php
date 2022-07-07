@@ -5,6 +5,7 @@ namespace App\admin\service;
 
 
 use App\constant\AdminPage;
+use app\constant\Error;
 use app\exception\AdminException;
 use app\exception\CommonException;
 use app\model\AdminRole;
@@ -95,7 +96,7 @@ class Role
         /** @var AdminRole $role */
         $role = static::getRoleBySlug($slug);
         if ($role) {
-            throw new AdminException(1);
+            throw new AdminException(Error::RoleNotFound);
         }
 
         $role = new AdminRole();
@@ -127,14 +128,18 @@ class Role
      */
     public static function updateRole($roleId, $name, array $permissionIds = []): AdminRole
     {
-        if (!$name || !$roleId) {
-            throw new AdminException(1);
+        if (!$name) {
+            throw new AdminException(Error::RoleNameNotNull);
+        }
+
+        if (!$roleId) {
+            throw new AdminException(Error::RoleIdNotNull);
         }
 
         /** @var AdminRole $role */
         $role = static::getRoleById($roleId);
         if (!$role) {
-            throw new AdminException(1);
+            throw new AdminException(Error::RoleNotFound);
         }
 
         $role->name = $name;
@@ -155,6 +160,7 @@ class Role
      * 删除角色(支持单个，批量)
      * @param $roleIds
      * @return mixed|string[]
+     * @throws \Exception
      */
     public static function deleteRoles($roleIds) {
         if (is_string($roleIds)) {
@@ -175,6 +181,7 @@ class Role
             DB::commit();
         } catch (\Exception $ex) {
             DB::rollBack();
+            throw $ex;
         }
 
         return $roleIds;

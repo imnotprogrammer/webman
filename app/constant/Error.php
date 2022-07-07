@@ -12,7 +12,7 @@ class Error {
     /** token 过期 */
     const TokenExpired = 50003;
 
-     /** token 个数不匹配 */
+    /** token 个数不匹配 */
     const TokenNotMatch = 50004;
 
     /** 没有权限 */
@@ -72,14 +72,29 @@ class Error {
     const MenuPermissionIdNotNULL = 50047;
     /** @var int 两次密码不一致 */
     const LoginPasswordConfirmError = 50048;
-
+    /** @var int MenuNotFound */
+    const MenuNotFound = 50049;
+    /** @var int MenuDeleteNotNull */
+    const MenuDeleteNotNull = 50050;
+    /** @var int AdminDeleteNotNull */
+    const AdminDeleteNotNull = 50051;
+    /** @var int AdminInfoNotEdit */
+    const AdminInfoNotEdit = 50052;
+    /** @var int AdminNotFound */
+    const AdminNotFound = 50053;
+    /** @var int RoleNotFound */
+    const RoleNotFound = 50054;
+    /** @var int RoleNameNotNull */
+    const RoleNameNotNull = 50055;
+    /** @var int RoleIdNotNull */
+    const RoleIdNotNull = 50056;
     /**
      * 获取错误码信息通过错误码
      * @param int $code  错误码
      * @param array $extra 其它信息
      */
-    public static function getMessageByCode($code, $extra = []): ?string
+    public static function getMessageByCode($code, array $extra = []): ?string
     {
-        return trans( $code, $extra, self::TRANS_FILE );
+        return trans( $code, $extra, config('translation.error_trans', 'error'));
     }
 }

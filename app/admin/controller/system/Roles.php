@@ -63,7 +63,8 @@ class Roles extends Controller
         $name = $request->post('name');
         $permissionIds = $request->post('permissionIds');
 
-        return $this->success(Role::formatRole(Role::updateRole($roleId, $name, explode(',', $permissionIds))));
+        $role = Role::updateRole($roleId, $name, explode(',', $permissionIds));
+        return $this->success(Role::formatRole($role));
     }
 
     /**
@@ -73,6 +74,7 @@ class Roles extends Controller
      * @slug role-delete
      * @parentSlug role-list
      * @return \support\Response
+     * @throws \Exception
      */
     public function delete(Request $request) {
         $roleIds = explode(',', $request->post('roleIds'));

@@ -27,4 +27,12 @@ return [
     Error::MenuLocaleMaxLength => 'Menu Locale Max Length',
     Error::MenuPermissionIdNotNULL => 'Menu Permission Id Not NULL',
     Error::LoginPasswordConfirmError => 'Login Password Confirm Error',
+    Error::MenuNotFound => 'Menu Not Found',
+    Error::MenuDeleteNotNull => 'Required delete menu not null',
+    Error::AdminDeleteNotNull => 'Required delete admin not null',
+    Error::AdminInfoNotEdit => 'Admin Info Not Edit',
+    Error::AdminNotFound => 'Admin Not Found',
+    Error::RoleNotFound => 'Role Not Found',
+    Error::RoleNameNotNull => 'Role Name Not Null',
+    Error::RoleIdNotNull => 'Role Id Not Null',
 ];

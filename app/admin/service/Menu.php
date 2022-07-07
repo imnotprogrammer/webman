@@ -5,12 +5,10 @@ namespace App\admin\service;
 use app\constant\Error;
 use app\exception\AdminException;
 use app\model\AdminPermission;
-use app\model\AdminRole;
 use app\model\AdminUser;
 use App\utils\ParseDocument;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use function Symfony\Component\String\s;
 
 class Menu {
 
@@ -215,7 +213,7 @@ class Menu {
     public static function updateMenu($menuId, $data) {
         $menu = AdminPermission::find($menuId);
         if (!$menu) {
-            return false;
+            throw new AdminException(Error::MenuNotFound);
         }
 
         $menu->name = $data['name'];
@@ -280,13 +278,14 @@ class Menu {
      * 删除菜单/权限
      * @param $menuIds
      * @return false
+     * @throws AdminException
      */
     public static function deleteMenu($menuIds): bool
     {
         $menuIds = array_unique(array_filter($menuIds));
 
         if (!$menuIds) {
-            return false;
+            throw new AdminException(Error::MenuDeleteNotNull);
         }
 
         return (bool)AdminPermission::query()
