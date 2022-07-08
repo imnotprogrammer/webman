@@ -1,9 +1,9 @@
 <?php
 
-namespace App\admin\service;
+namespace App\service;
 
 use app\constant\Error;
-use app\exception\AdminException;
+use app\exception\CommonException;
 
 class Token {
     /**
@@ -43,13 +43,13 @@ class Token {
     /**
      * @param string  token 校验token是不是正确的
      * @return int
-     * @throws AdminException
+     * @throws CommonException
      */
     public static function checkToken($token): int
     {
         $data = explode(config('common.token.splitCode', '-'), $token);
         if (count($data) != self::TOKEN_LENGTH) {
-            throw new AdminException(Error::SystemError);
+            throw new CommonException(Error::SystemError);
         }
 
         list($userId, $userName, $expireAt, $signature) = $data;
@@ -61,11 +61,11 @@ class Token {
         $trueSignature = hash_hmac('md5', $info, config('common.token.signature'));
 
         if (time() >= $expireAt) {
-             throw new AdminException(Error::TokenExpired);
+             throw new CommonException(Error::TokenExpired);
         }
 
         if ($trueSignature !== $signature) {
-            throw new AdminException(Error::TokenValidateFailed);
+            throw new CommonException(Error::TokenValidateFailed);
         }
 
         return $userId;

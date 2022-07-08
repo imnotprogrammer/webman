@@ -26,11 +26,18 @@ class ErrorCode
 
     private $errorClass = Error::class;
 
+    private $transFile = 'error';
+
     /** @var $instance 实例 */
     static $instance;
 
     private function __construct() {
 
+    }
+
+    public function setTransFile($file) {
+        $this->transFile = $file;
+        return $this;
     }
 
     public function setPrePrint($status) {
@@ -93,7 +100,7 @@ class ErrorCode
             throw new \RuntimeException(sprintf('const %s exisit', $name));
         }
 
-        $lastNumber = $this->isHadoop ? $this->getNumber() : max($constants);
+        $lastNumber = $this->isHadoop ? $this->getNumber() : max($constants ?: [0]);
         $content = file_get_contents($ref->getFileName());
 
         if ($lastNumber) {
@@ -132,7 +139,7 @@ class {$name} {
      */
     public static function getMessageByCode(\$code, \$extra = []): ?string
     {
-        return trans( \$code, \$extra, config('translation.error_trans', 'error'));
+        return trans( \$code, \$extra, '{$this->transFile}');
     }
 }
 EOT;
@@ -166,8 +173,9 @@ EOT;
         $ref = new \ReflectionClass($this->errorClass);
         $namespace = $ref->getName();
         $constants = $ref->getConstants();
+        $className = $ref->getShortName();
 
-        $transFile = config('translation.error_trans', 'error');
+        $transFile = $this->transFile;
         $i = 0;
         foreach ($fallbackLocale as $locale) {
             $langFile = $langPath .DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . $transFile . '.php';
@@ -187,7 +195,7 @@ EOT;
                 if ($key == $name && $lang) {
                     $text = $lang[$i] ?? $text;
                 }
-                $str .= sprintf("    %s => '%s',\n", 'Error::'. $key, $text);
+                $str .= sprintf("    {$className}::%s => '%s',\n", $key, $text);
             }
 
             if (!in_array($name, array_keys($constants))) {
@@ -197,7 +205,7 @@ EOT;
                     $text = str_replace('_', ' ', $lang[$i] ?? $text);
                 }
 
-                $str .= sprintf("    %s => '%s',", 'Error::'. $name, $text);
+                $str .= sprintf("    {$className}::%s => '%s',", $name, $text);
             }
 
             $i++;

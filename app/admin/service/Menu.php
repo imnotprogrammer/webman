@@ -4,6 +4,7 @@ namespace App\admin\service;
 
 use app\constant\Error;
 use app\exception\AdminException;
+use app\exception\CommonException;
 use app\model\AdminPermission;
 use app\model\AdminUser;
 use App\utils\ParseDocument;
@@ -142,7 +143,21 @@ class Menu {
              if (in_array($parent['slug'], static::$slug)) {
                  continue;
              }
-             $menu = static::addMenu(array_merge($parent, ['parentId' => $parentId]));
+
+             if (!$parentId && $parent['isMenu']) {
+                 echo '['.$parent['name'] .']('. $parent['slug'] .')|'.PHP_EOL;
+             } else if ($parentId && $parent['isMenu']) {
+                 echo '|----['.$parent['name'] .']('. $parent['slug'] .')|'. PHP_EOL;
+             } else {
+                 echo '|--------['.$parent['name'] .']('. $parent['slug'] . ')|' . PHP_EOL;
+             }
+
+
+             try {
+                 $menu = static::addMenuExisitUpdate(array_merge($parent, ['parentId' => $parentId]));
+             } catch (AdminException $ex) {
+
+             }
 
              static::$slug[] = $parent['slug'];
              if (isset($parent['children'])) {
@@ -174,6 +189,38 @@ class Menu {
     }
 
     /**
+     * @param $params
+     * @return AdminPermission|\Illuminate\Database\Eloquent\Builder|Model|object
+     * @throws AdminException
+     */
+    public static function addMenuExisitUpdate($params) {
+        $menu = AdminPermission::where('slug', $params['slug'])->first();
+        if ($menu) {
+            $menu->name = $params['name'];
+            $menu->icon = $params['icon'];
+            $menu->locale = $params['locale'];
+            $menu->path = $params['path'];
+            $menu->order = $params['order'] ?? $menu->order;
+            $menu->parent_id = $params['parentId'] ?? $menu->order;
+            $menu->is_menu = $params['isMenu'] ? AdminPermission::MENU_YES : AdminPermission::MENU_NO;
+        } else {
+            $menu = new AdminPermission([
+                'name' => $params['name'],
+                'slug' => $params['slug'],
+                'locale' => $params['locale'],
+                'icon' => $params['icon'],
+                'path' => $params['path'],
+                'order' => $params['order'] ?: self::DEFAULT_ORDER,
+                'parent_id' => $params['parentId'] ?: 0,
+                'is_menu' => $params['isMenu'] ? AdminPermission::MENU_YES : AdminPermission::MENU_NO
+            ]);
+        }
+
+        $menu->save();
+        return $menu;
+    }
+
+    /**
      * 添加菜单或权限
      * @param $params
      * @return AdminPermission|false
@@ -182,7 +229,7 @@ class Menu {
     public static function addMenu($params) {
         $isExist = AdminPermission::where('slug', $params['slug'])->first();
         if ($isExist) {
-            throw new AdminException(Error::MenuSlugUniqiued);
+            throw new AdminException(Error::MenuSlugHasExisited, ['slug' => $params['slug']]);
         }
 
         $menu = new AdminPermission([

@@ -3,7 +3,7 @@
 
 namespace App\admin\controller\auth;
 
-use App\admin\service\Token;
+use App\service\Token;
 use app\constant\Error;
 use App\Controller;
 use app\exception\AdminException;

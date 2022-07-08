@@ -47,12 +47,6 @@ class Home extends Controller
     }
 
     /**
-     * @name 用户信息
-     * @locale menu.user.info
-     * @icon icon_search
-     * @path /home/info
-     * @slug personal-info
-     * @parentSlug  dashboard
      * @param Request $request
      * @return \support\Response
      */

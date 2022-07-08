@@ -10,7 +10,7 @@ class Config extends Controller
      * @name 系统配置
      * @locale menu.system.config
      * @icon icon-dashboard
-     * @slug config
+     * @slug config-view
      * @parentSlug system
      * @isMenu true
      * @return \support\Response
@@ -26,7 +26,7 @@ class Config extends Controller
      * @locale menu.system.config.save
      * @icon icon-dashboard
      * @slug config-save
-     * @parentSlug config
+     * @parentSlug config-view
      * @return \support\Response
      */
     public function save() {

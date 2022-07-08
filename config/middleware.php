@@ -22,6 +22,7 @@ return [
     ],
 
     'api' => [
-        \app\middleware\CheckInstallState::class
+        //\app\middleware\CheckInstallState::class,
+        \app\middleware\CheckToken::class
     ]
 ];

@@ -10,9 +10,9 @@
  */
 
 
-namespace app\model{
+namespace App\model{
 /**
- * app\model\AdminPermission
+ * App\model\AdminPermission
  *
  * @property int $permission_id
  * @property string $name 菜单(权限)名称
@@ -51,7 +51,7 @@ namespace app\model{
  * @property Carbon $update_time
  * @property Carbon $delete_time
  * @property-read \Illuminate\Database\Eloquent\Collection|\app\model\AdminUser[] $administrators
- * @property-read \Illuminate\Database\Eloquent\Collection|\app\model\AdminPermission[] $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\model\AdminPermission[] $permissions
  * @method static \Illuminate\Database\Eloquent\Builder|AdminRole newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AdminRole newQuery()
  * @method static \Illuminate\Database\Query\Builder|AdminRole onlyTrashed()
@@ -175,5 +175,103 @@ namespace app\model{
  * @method static \Illuminate\Database\Query\Builder|Test withoutTrashed()
  */
 	class Test extends \Eloquent {}
+}
+
+namespace app\model{
+/**
+ * app\model\User
+ *
+ * @property int $user_id
+ * @property string|null $real_full_name 用户姓名
+ * @property string|null $first_name 用户名字首
+ * @property string|null $last_name 用户名字尾
+ * @property string|null $middle_name 用户名字中
+ * @property string|null $card_number 身份唯一标识
+ * @property string|null $phone 手机号码
+ * @property string|null $passwd 用户登录密码
+ * @property string|null $salt 用户登录盐值
+ * @property string|null $email 用户邮箱
+ * @property int|null $invite_user_id 邀请用户ID
+ * 邀请人
+ * @property int|null $gender 性别 0-未知 1-男 2-女
+ * @property string|null $birth_day 出生年月
+ * @property string|null $from 用户来源 注册设备类型,1-web 2-android 3-ios
+ * @property int|null $last_login_time 最近登录时间
+ * @property string|null $last_login_type 用户最近登录类型
+ * @property int|null $create_time 注册时间
+ * @property int|null $update_time 更新时间
+ * @property \Illuminate\Support\Carbon|null $delete_time 禁用时间
+ * @property int|null $current_verify_step 当前认证第几部默认为1
+ * @property-read \app\model\UserVerify|null $verify
+ * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Query\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
+ */
+	class User extends \Eloquent {}
+}
+
+namespace app\model{
+/**
+ * app\model\UserVerify
+ *
+ * @property int $user_verify_id
+ * @property int|null $user_id
+ * @property string|null $first_name
+ * @property string|null $middle_name
+ * @property string|null $last_name
+ * @property string|null $birth_date
+ * @property int|null $gender
+ * @property int|null $martial_status
+ * @property int|null $number_of_children
+ * @property int|null $family_contact_id
+ * @property int|null $other_contact_id
+ * @property string|null $state
+ * @property string|null $city
+ * @property string|null $area
+ * @property string|null $address
+ * @property int|null $educ_id
+ * @property int|null $employment_status_id
+ * @property string|null $employer_name
+ * @property int|null $employer_period
+ * @property int|null $salary
+ * @property int|null $pay_day
+ * @property string|null $id_number
+ * @property string|null $bank_name
+ * @property string|null $bank_code
+ * @property string|null $bank_number
+ * @property string|null $face_live_verify
+ * @property \Illuminate\Support\Carbon|null $create_time
+ * @property \Illuminate\Support\Carbon|null $update_time
+ * @property \Illuminate\Support\Carbon|null $delete_time
+ * @property-read \Illuminate\Database\Eloquent\Collection|\app\model\UserVerifyContact[] $contacts
+ * @method static \Illuminate\Database\Eloquent\Builder|UserVerify newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserVerify newQuery()
+ * @method static \Illuminate\Database\Query\Builder|UserVerify onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserVerify query()
+ * @method static \Illuminate\Database\Query\Builder|UserVerify withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|UserVerify withoutTrashed()
+ */
+	class UserVerify extends \Eloquent {}
+}
+
+namespace app\model{
+/**
+ * app\model\UserVerifyContact
+ *
+ * @property int $user_verify_contact_id
+ * @property int|null $user_verify_id
+ * @property string|null $phone
+ * @property string|null $name
+ * @property string|null $relation
+ * @property \Illuminate\Support\Carbon|null $create_time
+ * @property \Illuminate\Support\Carbon|null $update_time
+ * @method static \Illuminate\Database\Eloquent\Builder|UserVerifyContact newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserVerifyContact newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserVerifyContact query()
+ */
+	class UserVerifyContact extends \Eloquent {}
 }
 

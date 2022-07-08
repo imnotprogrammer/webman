@@ -2,6 +2,7 @@
 
 namespace App\admin\controller\system;
 
+use app\constant\Error;
 use App\Controller;
 use app\exception\AdminException;
 use app\exception\CommonException;
@@ -41,9 +42,11 @@ class Menu extends Controller
     public function save(Request $request) {
         $data = $request->all();
         $check = (new MenuValidate())->scene('addMenu');
+
         if (!$check->check($data)) {
             throw new AdminException($check->getError());
         }
+
         $menu = MenuService::addMenu($data);
         return $this->success(MenuService::formatBaseMenu($menu));
     }

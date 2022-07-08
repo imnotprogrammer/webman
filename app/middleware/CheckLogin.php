@@ -2,7 +2,7 @@
 namespace app\middleware;
 
 use App\admin\service\Menu;
-use App\admin\service\Token;
+use App\service\Token;
 use app\constant\Error;
 use App\constant\Permissions;
 use app\exception\AdminException;

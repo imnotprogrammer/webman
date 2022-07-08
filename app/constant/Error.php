@@ -88,6 +88,8 @@ class Error {
     const RoleNameNotNull = 50055;
     /** @var int RoleIdNotNull */
     const RoleIdNotNull = 50056;
+    /** @var int MenuSlugHasExisited */
+    const MenuSlugHasExisited = 50057;
     /**
      * 获取错误码信息通过错误码
      * @param int $code  错误码

@@ -23,7 +23,7 @@ class CreateMenuCommand extends Command
      */
     protected function configure()
     {
-        $this->addArgument('isClear', InputArgument::OPTIONAL, 'Is To Clear Old Menu Data?', false);
+        $this->addArgument('isClear', InputArgument::OPTIONAL, 'Is To Clear Old Menu Data?', true);
     }
 
     /**
@@ -35,7 +35,7 @@ class CreateMenuCommand extends Command
     {
         $isClear = $input->getArgument('isClear');
 
-        Menu::init($isClear === 'true');
+        Menu::init($isClear === true);
         return self::SUCCESS;
     }
 
